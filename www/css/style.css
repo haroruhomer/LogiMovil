@@ -1,1 +1,14 @@
 /* Empty. Add your own CSS if you like */
+.tableindex{
+	font-weight:bold; 
+	background: #DDD;
+}
+.tablecontent{
+	box-shadow: .10em .10em .10em .10em #AAA;
+	background: #EEE;
+	padding-left: 10px;
+	padding-top: 5px;
+}
+.center{
+	padding-left: 20px;
+}
