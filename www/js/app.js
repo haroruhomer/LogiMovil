@@ -37,8 +37,8 @@ angular.module('logimovil', ['ionic','logimovil.controllers'])
   })
   .state('pedido',{
     url: '/pedido/:consecutivo',
-    templateUrl: 'templates/pedido.html'
-    controller:'pedidoCtrl';
+    templateUrl: 'templates/pedido.html',
+    controller:'pedidoCtrl'
   })
   .state('recojo',{
     url: '/recojo',

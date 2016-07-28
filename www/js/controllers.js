@@ -55,16 +55,71 @@ angular.module('logimovil.controllers',[])
 				$window.location="#/home";
 			};
 	})
-	.controller('pedidoCtrl', function($scope,$http, $window, $stateParams)
+	.controller('pedidoCtrl', function($scope,$http, $window, $stateParams){
 		$scope.$on('$ionicView.enter',function(event,data){
+			$scope.estado="";
+			$scope.novedad="";
+			$scope.tipo='r';
 			$scope.pedidos=[];
+			//Lista para los select estados de pedido
+			$scope.estadopedido=[
+				{text: "Entregado", value:3},
+				{text: "No entregado", value:4}
+			];
+			//Lsta para los select estados de recojo
+			$scope.estadorecojo=[
+				{text: "Recibido", value:3},
+				{text: "No recibido", value:4}
+			];
+			//Novedades de pedido entregado
+			$scope.entregado=[
+				{text: "Recibió titular", value:10},
+				{text: "Recibió tercero en domicilio", value:8},
+				{text: "Entregó en otro domicilio", value:9}
+			];
+			//Novedades de pedido no entregado
+			$scope.noentregado=[
+				{text:"Dirección errada", value:1},
+				{text:"No hay quien reciba", value:2},
+				{text:"No acepta pedido", value:3},
+				{text:"Fuera de zona", value:4},
+				{text:"Siniestro", value:5},
+				{text:"Ya no vive en dirección", value:6},
+				{text:"Anulado", value:7},
+				{text:"No visitado", value:18},
+			];
+			//novedades recojo recibido
+			$scope.recibido=[
+				{text:"Recibe sin novedad", value:6},
+				{text:"Tercero en domicilio", value:7},
+				{text:"En otro domicilio", value:8},
+				{text:"Novedad en dirección", value:9}
+			];
+			//Novedades recojo no recibido
+			$scope.norecibido=[
+				{text:"Dirección Errada", value:1},
+				{text:"Referencia no coincide", value:2},
+				{text:"Diferencia en unidades", value:3},
+				{text:"No hay quien entregue", value:4},
+				{text:"No visitado", value:5},
+				{text:"Mercancia averiada", value:10}
+			];
 			$scope.id=$stateParams.consecutivo;
-			var request={
-				method:'POST',
-				url:"http://movilweb.net/logistica/Movil/trae_phpver22.php",
-				headers:{
-					"Content-Type":undefined
-				},
-				data:
+			// var request={
+			// 	method:'POST',
+			// 	url:"http://movilweb.net/logistica/Movil/trae_phpver22.php",
+			// 	headers:{
+			// 		"Content-Type":undefined
+			// 	},
+			// 	data:
+			// }
+		})
+		$scope.enviar=function() {
+			var enviar=confirm("¿Enviar?");
+			if (enviar==true) {
+					alert("enviar");
+			}else {
+					alert("No enviar");
 			}
-		});
+		};
+	});
