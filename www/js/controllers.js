@@ -62,5 +62,9 @@ angular.module('logimovil.controllers',[])
 			var request={
 				method:'POST',
 				url:"http://movilweb.net/logistica/Movil/trae_phpver22.php",
+				headers:{
+					"Content-Type":undefined
+				},
+				data:
 			}
 		});
