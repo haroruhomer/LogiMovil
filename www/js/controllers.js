@@ -55,8 +55,44 @@ angular.module('logimovil.controllers',[])
 				$window.location="#/home";
 			};
 	})
-	.controller('pedidoCtrl', function($scope,$http, $window, $stateParams){
+	.controller('pedidoCtrl', function($scope, $http, $window, $stateParams){
 		$scope.$on('$ionicView.enter',function(event,data){
+
+			$scope.latitud=0;
+			$scope.longitud=0;
+			$scope.precision=0;
+
+			navigator.geolocation.getCurrentPosition(
+				function (position) {
+					$scope.latitud=position.coords.latitude;
+					$scope.longitud=position.coords.longitude;
+					$scope.precision=position.coords.accuracy;
+				},
+					function (error) {
+
+					},{ enableHighAccuracy: true }
+			);
+			$scope.id=$stateParams.consecutivo;
+
+			var request={
+				method:'POST',
+				url:"http://movilweb.net/logistica/Movil/trae_pedido.php",
+				headers:{
+					"Content-Type":undefined
+				},
+				data:{consecutivo:$scope.id},
+				dataType:'jsonp'
+			}
+			$http(request)
+				.then(function success(response){
+					if(response.data!="null"){
+						console.log(response.data[0].id);
+						$scope.pedido=response.data[0];
+					}
+				}, function error(response){
+					console.log("Error:" +response.status);
+					alert("No se conecto");
+				});
 			$scope.estado="";
 			$scope.novedad="";
 			$scope.tipo='r';
@@ -104,15 +140,7 @@ angular.module('logimovil.controllers',[])
 				{text:"No visitado", value:5},
 				{text:"Mercancia averiada", value:10}
 			];
-			$scope.id=$stateParams.consecutivo;
-			// var request={
-			// 	method:'POST',
-			// 	url:"http://movilweb.net/logistica/Movil/trae_phpver22.php",
-			// 	headers:{
-			// 		"Content-Type":undefined
-			// 	},
-			// 	data:
-			// }
+
 		})
 		$scope.enviar=function() {
 			var enviar=confirm("¿Enviar?");

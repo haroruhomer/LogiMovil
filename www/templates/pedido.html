@@ -1,124 +1,126 @@
 <ion-view view-title="Pedido">
-	<div style="font-size:100%">
-		<div class="row">
-			<div class="col tableindex tablecontent" >Consecutivo:</div>
-			<div class="col tablecontent">13424</div>
-		</div>
-		<div class="row">
-			<div class="col tableindex tablecontent">Orden de Cargue:</div>
-			<div class="col tablecontent">123434</div>
-		</div>
-		<div class="row">
-			<div class="col tableindex tablecontent" >Cajas:</div>
-			<div class="col tablecontent">1</div>
-			<div class="col tableindex tablecontent">D.Ident:</div>
-			<div class="col tablecontent">123434342</div>
-		</div>
-		<div class="row">
-			<div class="col tableindex tablecontent">Cliente:</div>
-			<div class="col-75 tablecontent">Sandra Patricia Bernal Ortiz</div>
-		</div>
-		<div class="row">
-			<div class="col tableindex tablecontent">Dirección:</div>
-			<div class="col-60 tablecontent">Clle 18b # 1-04 brasilia</div>
-		</div>
-		<div class="row">
-			<div class="col tableindex tablecontent">N° pedido</div>
-			<div class="col tablecontent">123123123</div>
-			<!--<div class="col tableindex tablecontent">N°</div>
-			<div class="col tablecontent">13424</div>-->
-		</div>
-		<div class="row">
-			<div class="col tableindex tablecontent">Latitud</div>
-			<div class="col-75 tablecontent">1.7364753424</div>
-		</div>
-		<div class="row">
-			<div class="col tableindex tablecontent">Longitud</div>
-			<div class="col-75 tablecontent">13.76865424</div>
-		</div>
-		<div class="row">
-			<div class="col tableindex tablecontent">Precisión</div>
-			<div class="col-75 tablecontent">13</div>
-		</div>
-	</div>
-	<div>
-		<!-- Inicio selects de pedidos -->
-		<div ng-if="tipo=='p'">
-			<div class="list">
-			  <label class="item item-input item-select">
-			    <div class="input-label">
-						Estado:
-			    </div>
-			    <select ng-model="estado">
-			      <option ng-repeat="estado in estadopedido">{{estado.text}}</option>
-			    </select>
-			  </label>
+		<ion-content>
+			<div style="font-size:100%">
+				<div class="row">
+					<div class="col tableindex tablecontent" >Consecutivo:</div>
+					<div class="col tablecontent">{{pedido.consecutivo}}</div>
+				</div>
+				<div class="row">
+					<div class="col tableindex tablecontent">Orden de Cargue:</div>
+					<div class="col tablecontent">{{pedido.id_ocargue}}</div>
+				</div>
+				<div class="row">
+					<div class="col tableindex tablecontent" >Cajas:</div>
+					<div class="col tablecontent">{{pedido.cajas}}</div>
+					<div class="col tableindex tablecontent">D.Ident:</div>
+					<div class="col tablecontent">{{pedido.cedula}}</div>
+				</div>
+				<div class="row">
+					<div class="col tableindex tablecontent">Cliente:</div>
+					<div class="col-75 tablecontent">{{pedido.nombre}}</div>
+				</div>
+				<div class="row">
+					<div class="col tableindex tablecontent">Dirección:</div>
+					<div class="col-60 tablecontent">{{pedido.direccion}}</div>
+				</div>
+				<div class="row">
+					<div class="col tableindex tablecontent">N° pedido</div>
+					<div class="col tablecontent">{{pedido.pedido}}</div>
+					<!--<div class="col tableindex tablecontent">N°</div>
+					<div class="col tablecontent">13424</div>-->
+				</div>
+				<div class="row">
+					<div class="col tableindex tablecontent">Latitud</div>
+					<div class="col-75 tablecontent">{{latitud}}</div>
+				</div>
+				<div class="row">
+					<div class="col tableindex tablecontent">Longitud</div>
+					<div class="col-75 tablecontent">{{longitud}}</div>
+				</div>
+				<div class="row">
+					<div class="col tableindex tablecontent">Precisión</div>
+					<div class="col-75 tablecontent">{{precision}}</div>
+				</div>
 			</div>
-			<!-- Select si entregado-->
-			<div class="list" ng-if="estado=='Entregado'">
-			  <label class="item item-input item-select">
-			    <div class="input-label">
-			      Recibe:
-			    </div>
-			    <select ng-model="novedad">
-			      <option ng-repeat="entrego in entregado" >{{entrego.text}}</option>
-			    </select>
-			  </label>
-		  </div>
-			<!-- Select si no entregado-->
-			<div class="list" ng-if="estado=='No entregado'">
-			  <label class="item item-input item-select">
-			    <div class="input-label">
-			      Recibe:
-			    </div>
-			    <select ng-model="novedad">
-			      <option ng-repeat="entrego in noentregado" >{{entrego.text}}</option>
-			    </select>
-			  </label>
-		  </div>
-			</div>
-		<!-- Fin selects de pedidos -->
+			<div>
+				<!-- Inicio selects de pedidos -->
+				<div ng-if="tipo=='p'">
+					<div class="list">
+					  <label class="item item-input item-select">
+					    <div class="input-label">
+								Estado:
+					    </div>
+					    <select ng-model="estado">
+					      <option ng-repeat="estado in estadopedido">{{estado.text}}</option>
+					    </select>
+					  </label>
+					</div>
+					<!-- Select si entregado-->
+					<div class="list" ng-if="estado=='Entregado'">
+					  <label class="item item-input item-select">
+					    <div class="input-label">
+					      Recibe:
+					    </div>
+					    <select ng-model="novedad">
+					      <option ng-repeat="entrego in entregado" >{{entrego.text}}</option>
+					    </select>
+					  </label>
+				  </div>
+					<!-- Select si no entregado-->
+					<div class="list" ng-if="estado=='No entregado'">
+					  <label class="item item-input item-select">
+					    <div class="input-label">
+					      Recibe:
+					    </div>
+					    <select ng-model="novedad">
+					      <option ng-repeat="entrego in noentregado" >{{entrego.text}}</option>
+					    </select>
+					  </label>
+				  </div>
+					</div>
+				<!-- Fin selects de pedidos -->
 
-		<!-- Inicio selects de recojos -->
-		<div ng-if="tipo=='r'">
-			<div class="list">
-			  <label class="item item-input item-select">
-			    <div class="input-label">
-						Estado:
-			    </div>
-			    <select ng-model="estado">
-			      <option ng-repeat="estado in estadorecojo">{{estado.text}}</option>
-			    </select>
-			  </label>
-			</div>
-			<!-- Select si recibido-->
-			<div class="list" ng-if="estado=='Recibido'">
-			  <label class="item item-input item-select">
-			    <div class="input-label">
-			      Recibe:
-			    </div>
-			    <select ng-model="novedad">
-			      <option ng-repeat="recojo in recibido" >{{recojo.text}}</option>
-			    </select>
-			  </label>
-		  </div>
-			<!-- Select si no recibido-->
-			<div class="list" ng-if="estado=='No recibido'">
-			  <label class="item item-input item-select">
-			    <div class="input-label">
-			      Recibe:
-			    </div>
-			    <select ng-model="novedad">
-			      <option ng-repeat="recojo in noentregado" >{{recojo.text}}</option>
-			    </select>
-			  </label>
-		  </div>
-		</div>
-		<!-- Fin selects de recojos -->
+				<!-- Inicio selects de recojos -->
+				<div ng-if="tipo=='r'">
+					<div class="list">
+					  <label class="item item-input item-select">
+					    <div class="input-label">
+								Estado:
+					    </div>
+					    <select ng-model="estado">
+					      <option ng-repeat="estado in estadorecojo">{{estado.text}}</option>
+					    </select>
+					  </label>
+					</div>
+					<!-- Select si recibido-->
+					<div class="list" ng-if="estado=='Recibido'">
+					  <label class="item item-input item-select">
+					    <div class="input-label">
+					      Recibe:
+					    </div>
+					    <select ng-model="novedad">
+					      <option ng-repeat="recojo in recibido" >{{recojo.text}}</option>
+					    </select>
+					  </label>
+				  </div>
+					<!-- Select si no recibido-->
+					<div class="list" ng-if="estado=='No recibido'">
+					  <label class="item item-input item-select">
+					    <div class="input-label">
+					      Recibe:
+					    </div>
+					    <select ng-model="novedad">
+					      <option ng-repeat="recojo in noentregado" >{{recojo.text}}</option>
+					    </select>
+					  </label>
+				  </div>
+				</div>
+				<!-- Fin selects de recojos -->
 
-	<div class="row">
-		<div class="col center" ng-if="tipo=='p'"><button class="button tablecontent">Foto</button></div>
-		<div class="col center"><button class="button tablecontent" ng-click="enviar()">Enviar</button></div>
-		<div class="col center"><a href="#/lista"><button class="button tablecontent">Atras</button></a></div>
-	</div>
+			<div class="row">
+				<div class="col center" ng-if="tipo=='p'"><button class="button tablecontent">Foto</button></div>
+				<div class="col center"><button class="button tablecontent" ng-click="enviar()">Enviar</button></div>
+				<div class="col center"><a href="#/lista"><button class="button tablecontent">Atras</button></a></div>
+			</div>
+	</ion-content>
 </ion-view>
