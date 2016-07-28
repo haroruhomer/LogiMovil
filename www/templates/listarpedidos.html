@@ -1,7 +1,7 @@
-<ion-view view-title="Lista de pedidos">
+<ion-view view-title="Lista de pedidos" cache-view="false">
 	<ion-content>
 		<div class="has-header" style="text-align:right">
-			<button class="button">Cerrar Sesión</button>
+			<button class="button" ng-click="logout()">Cerrar Sesión</button>
 		</div>
 		<div style="text-align:center">
 		<h3>{{placa}}</h3>
@@ -10,7 +10,7 @@
 		<br>		
 		<div>
 			<label class="item item-input"><i class="icon ion-search placeholder-icon"></i>
-			<input type="search" placeholder="search"></label>
+			<input type="search" placeholder="search" ng-model="buscar"></label>
 		</div>
 		</div>
 		<br>
@@ -20,7 +20,7 @@
 					Pedidos
 				</div>
 				<ion-list>
-					<ion-item ng-repeat="pedido in pedidos" href="#/pedido/{{pedido.consecutivo}}">
+					<ion-item ng-repeat="pedido in pedidos | filter:buscar" href="#/pedido/{{pedido.consecutivo}}">
 						{{pedido.nombre}}<br>{{pedido.cedula}}
 					</ion-item>
 				</ion-list>
