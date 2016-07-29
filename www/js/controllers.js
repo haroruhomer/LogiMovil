@@ -6,10 +6,10 @@ angular.module('logimovil.controllers',[])
 			var request={
 				method:'POST',
 				url:"http://movilweb.net/logistica/Movil/access_movil.php",
-				headers:{
-					'Content-Type': undefined
-				},
-				data:{usuario:$scope.loginData.usuario,password:$scope.loginData.password},
+	      headers: {
+	        'Content-Type': undefined
+	      },
+				data:{usuario:$scope.loginData.usuario, password:$scope.loginData.password},
 				timeout:15000
 			}
 
@@ -56,22 +56,25 @@ angular.module('logimovil.controllers',[])
 			};
 	})
 	.controller('pedidoCtrl', function($scope, $http, $window, $stateParams){
-		$scope.$on('$ionicView.enter',function(event,data){
-
+		$scope.$on("$ionicView.beforeEnter", function(event, data){
 			$scope.latitud=0;
-			$scope.longitud=0;
-			$scope.precision=0;
+		 	$scope.longitud=0;
+		 	$scope.precision=0;
 
-			navigator.geolocation.getCurrentPosition(
-				function (position) {
-					$scope.latitud=position.coords.latitude;
-					$scope.longitud=position.coords.longitude;
-					$scope.precision=position.coords.accuracy;
-				},
-					function (error) {
+		 	navigator.geolocation.getCurrentPosition(
+			 function (position) {
+				 $scope.latitud=position.coords.latitude;
+				 $scope.longitud=position.coords.longitude;
+				 $scope.precision=position.coords.accuracy;
+			 },
+				 function (error) {
 
-					},{ enableHighAccuracy: true }
-			);
+				 },{ enableHighAccuracy: true }
+		 );
+   		console.log("State Params: ", data.stateParams);
+		});
+
+		$scope.$on('$ionicView.enter',function(event,data){
 			$scope.id=$stateParams.consecutivo;
 
 			var request={
@@ -88,6 +91,7 @@ angular.module('logimovil.controllers',[])
 					if(response.data!="null"){
 						console.log(response.data[0].id);
 						$scope.pedido=response.data[0];
+						$scope.tipo=$scope.pedido=response.data[0].tipodoc;
 					}
 				}, function error(response){
 					console.log("Error:" +response.status);
@@ -95,7 +99,7 @@ angular.module('logimovil.controllers',[])
 				});
 			$scope.estado="";
 			$scope.novedad="";
-			$scope.tipo='r';
+
 			$scope.pedidos=[];
 			//Lista para los select estados de pedido
 			$scope.estadopedido=[
