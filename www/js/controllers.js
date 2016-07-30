@@ -10,7 +10,7 @@ angular.module('logimovil.controllers', [])
           'Content-Type': undefined
         },
         data: {
-          usuario: $scope.loginData.usuario,
+          usuario: $scope.loginData.usuario.trim(),
           password: $scope.loginData.password
         },
         timeout: 15000
@@ -78,7 +78,6 @@ angular.module('logimovil.controllers', [])
           enableHighAccuracy: true
         }
       );
-      console.log("State Params: ", data.stateParams);
     });
 
     $scope.$on('$ionicView.enter', function(event, data) {
@@ -206,5 +205,26 @@ angular.module('logimovil.controllers', [])
       } else {
         alert("No enviar");
       }
+    };
+    $scope.tomarFoto = function() {
+      var options = {
+        // Some common settings are 20, 50, and 100
+        quality: 50,
+        destinationType: Camera.DestinationType.FILE_URI,
+        // In this app, dynamically set the picture source, Camera or photo gallery
+        sourceType: Camera.PictureSourceType.CAMERA,
+        encodingType: Camera.EncodingType.JPEG,
+        mediaType: Camera.MediaType.PICTURE,
+        allowEdit: false,
+        saveToPhotoAlbum:true,
+        correctOrientation: true  //Corrects Android orientation quirks
+    };
+      navigator.camera.getPicture(function(imageData) {
+          alert(imagedata);
+        },
+        function() {
+          alert("error");
+        },
+        options)
     };
   });

@@ -7,6 +7,7 @@ angular.module('logimovil', ['ionic','logimovil.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
+    console.log(navigator.camera);
     if(window.cordova && window.cordova.plugins.Keyboard) {
       // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
       // for form inputs)
