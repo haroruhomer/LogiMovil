@@ -5,9 +5,13 @@
 					<div class="col tableindex tablecontent" >Consecutivo:</div>
 					<div class="col tablecontent">{{pedido.consecutivo}}</div>
 				</div>
-				<div class="row">
+				<div class="row" ng-if="tipo=='P' || tipo=='A'">
 					<div class="col tableindex tablecontent">Orden de Cargue:</div>
 					<div class="col tablecontent">{{pedido.id_ocargue}}</div>
+				</div>
+				<div class="row" ng-if="tipo=='R'">
+					<div class="col tableindex tablecontent">Orden de Cargue:</div>
+					<div class="col tablecontent">{{pedido.id_ocarguerec}}</div>
 				</div>
 				<div class="row">
 					<div class="col tableindex tablecontent" >Cajas:</div>
@@ -42,10 +46,9 @@
 					<div class="col-75 tablecontent">{{precision}}</div>
 				</div>
 			</div>
-			<div>
 				<!-- Inicio selects de pedidos -->
 				<div ng-if="tipo=='P'">
-					<div class="list">
+					<div class="list ">
 					  <label class="item item-input item-select">
 					    <div class="input-label">
 								Estado:
@@ -77,7 +80,7 @@
 					    </select>
 					  </label>
 				  </div>
-					</div>
+				</div>
 				<!-- Fin selects de pedidos -->
 
 				<!-- Inicio selects de recojos -->

@@ -102,7 +102,7 @@ angular.module('logimovil.controllers', [])
             $scope.pedido = response.data[0];
             $scope.tipo = response.data[0].tipodoc;
             $scope.color="#000000";
-            if(response.data[0].tipodoc=="P"){
+            if(response.data[0].tipodoc=="P" || response.data[0].tipodoc=="A"){
             	$scope.color="#55ff55";
             }if (response.data[0].tipodoc=="R") {
             	$scope.color="#FFFF55";
