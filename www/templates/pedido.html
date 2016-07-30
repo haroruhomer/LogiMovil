@@ -1,6 +1,6 @@
 <ion-view view-title="Pedido" cache-view="false">
 		<ion-content>
-			<div style="font-size:100%">
+			<div style="font-size:100%; background:{{color}}; ">
 				<div class="row">
 					<div class="col tableindex tablecontent" >Consecutivo:</div>
 					<div class="col tablecontent">{{pedido.consecutivo}}</div>
@@ -116,7 +116,15 @@
 				  </div>
 				</div>
 				<!-- Fin selects de recojos -->
-
+			<div class="col center" ng-if="tipo=='P'">
+				<ion-list radio-group>
+					<ion-list-header><h4><b>Inventario</b></h4></ion-list-header>
+						<ion-radio value="inventariado">inventariado</ion-radio>
+					<ion-radio value="noinventariado">No Inventariado</ion-radio>
+					<ion-radio value="incompleto">Inventariado Incompleto</ion-radio>
+					</ion-list-header>
+				</ion-list>
+			</div>
 			<div class="row">
 				<div class="col center" ng-if="tipo=='P'"><button class="button tablecontent" ng-click="tomarFoto()">Foto</button></div>
 				<div class="col center"><button class="button tablecontent" ng-click="enviar()">Enviar</button></div>

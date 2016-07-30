@@ -66,6 +66,7 @@ angular.module('logimovil.controllers', [])
       $scope.longitud = 0;
       $scope.precision = 0;
 
+
       navigator.geolocation.getCurrentPosition(
         function(position) {
           $scope.latitud = position.coords.latitude;
@@ -100,6 +101,12 @@ angular.module('logimovil.controllers', [])
             console.log(response.data[0].id);
             $scope.pedido = response.data[0];
             $scope.tipo = response.data[0].tipodoc;
+            $scope.color="#000000";
+            if(response.data[0].tipodoc=="P"){
+            	$scope.color="#55ff55";
+            }if (response.data[0].tipodoc=="R") {
+            	$scope.color="#FFFF55";
+            }
           }
         }, function error(response) {
           console.log("Error:" + response.status);
