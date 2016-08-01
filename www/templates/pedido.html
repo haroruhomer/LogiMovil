@@ -1,4 +1,4 @@
-<ion-view view-title="Pedido" cache-view="false">
+<ion-view view-title="Pedido" cache-view="false" class="has-header">
 		<ion-content>
 			<div style="font-size:100%; background:{{color}}; ">
 				<div class="row">
@@ -129,7 +129,11 @@
 				</ion-list>
 			</div>
 			<div class="row">
-				<div class="col center" ng-if="tipo=='P'"><button class="button tablecontent" ng-click="tomarFoto()">Foto</button></div>
+				<div class="col center" ng-if="tipo=='P'"><button class="button tablecontent" ng-click="tomarFoto()">Foto 1</button></div>
+				<div class="col center" ng-if="tipo=='P'"><button class="button tablecontent" ng-click="tomarFoto2()">Foto 2</button></div>
+				<div class="col center" ng-if="tipo=='P'"><button class="button tablecontent" ng-click="tomarFoto3()">Foto 3</button></div>
+			</div>
+			<div class="row">
 				<div class="col center"><button class="button tablecontent" ng-click="enviar()">Enviar</button></div>
 				<div class="col center"><a href="#/lista"><button class="button tablecontent">Atras</button></a></div>
 			</div>
