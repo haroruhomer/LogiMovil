@@ -1,6 +1,6 @@
 /* Empty. Add your own CSS if you like */
 .tableindex{
-	font-weight:bold; 
+	font-weight:bold;
 	border-color: #000;
 }
 .tablecontent{
@@ -10,4 +10,13 @@
 }
 .center{
 	padding-left: 20px;
+}
+.tipo-P{
+	background-color: #55ff55;
+}
+.tipo-R{
+	background-color: #FFFF55;
+}
+.item-complex .item-content{
+	padding: 1px 5px 1px 5px;
 }

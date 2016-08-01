@@ -22,8 +22,10 @@
 				</div>
 				<ion-list>
 					<ion-item ng-repeat="pedido in pedidos | filter:buscar" href="#/pedido/{{pedido.consecutivo}}">
-						{{pedido.nombre}}
-						<br>{{pedido.cedula}}
+						<div class="tipo-{{pedido.tipodoc}}">
+							{{pedido.nombre}}
+							<br>{{pedido.cedula}}
+						</div>
 					</ion-item>
 				</ion-list>
 

@@ -94,7 +94,7 @@ angular.module('logimovil.controllers', [])
       console.log("pedido " + mipedido.tipodoc);
       $scope.pedido = mipedido;
       $scope.tipo = mipedido.tipodoc;
-      $scope.color = "#000000";
+      $scope.color = "#FFFFFF";
       if (mipedido.tipodoc == "P") {
         $scope.color = "#55ff55";
       }
