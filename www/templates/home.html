@@ -1,15 +1,17 @@
 <ion-view view-title="Login" class="has-header">
-  <form ng-submit="logearse()">
-    <div class="list">
-  <label class="item item-input">
-    <span class="input-label"></span>
-    <input type="text" placeholder="Placa" ng-model="loginData.usuario">
-  </label>
-  <label class="item item-input">
-    <span class="input-label"></span>
-    <input type="password" placeholder="Contraseña" ng-model="loginData.password">
-  </label>
-  <input type="submit" value="Ingresar" class="button button-block button-positive">
-</div>
-  </form>
+  <ion-content>
+    <form ng-submit="logearse()">
+      <div class="list">
+        <label class="item item-input">
+          <span class="input-label"></span>
+          <input type="text" placeholder="Placa" ng-model="loginData.usuario">
+        </label>
+        <label class="item item-input">
+          <span class="input-label"></span>
+          <input type="password" placeholder="Contraseña" ng-model="loginData.password">
+        </label>
+        <input type="submit" value="Ingresar" class="button button-block button-positive">
+      </div>
+    </form>
+  </ion-content>
 </ion-view>
