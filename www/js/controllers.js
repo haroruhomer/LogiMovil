@@ -87,11 +87,11 @@ angular.module('logimovil.controllers', [])
     $scope.$on('$ionicView.enter', function(event, data) {
       $scope.id = $stateParams.consecutivo;
       var pedidos = JSON.parse(localStorage.getItem('pedidos'));
-      console.log(JSON.parse(localStorage.getItem('pedidos')));
+      //console.log(JSON.parse(localStorage.getItem('pedidos')));
       var mipedido = $filter('filter')(pedidos, function(d) {
         return d.consecutivo === $scope.id;
       })[0];
-      console.log("pedido " + mipedido.tipodoc);
+      //console.log("pedido " + mipedido.tipodoc);
       $scope.pedido = mipedido;
       $scope.tipo = mipedido.tipodoc;
       $scope.color = "#FFFFFF";
@@ -130,8 +130,15 @@ angular.module('logimovil.controllers', [])
       //     console.log("Error:" + response.status);
       //     alert("No se conecto");
       //   });
-      $scope.estado = "";
-      $scope.novedad = "";
+      $scope.estadop = {}; //Estado pedido
+      $scope.novedadp = {}; //Novedad pedido
+
+
+      $scope.estador = {}; //Estado Recojo
+      $scope.novedadr = {}; //Novedad Recojo
+
+      $scope.inventariado={};
+
 
       $scope.pedidos = [];
       //Lista para los select estados de pedido
@@ -226,7 +233,27 @@ angular.module('logimovil.controllers', [])
     $scope.enviar = function() {
       var enviar = confirm("¿Enviar?");
       if (enviar == true) {
-        alert("enviar");
+        $scope.placa = localStorage.getItem('placa');
+        var request = {
+          method: 'POST',
+          url: "http://movilweb.net/logistica/Movil/enviar.php",
+          headers: {
+            "Content-Type": undefined
+          },
+          data: {
+            consecutivo: $scope.id,
+            placa : localStorage.getItem('placa'),
+            estadop: $scope.estadop
+          },
+          dataType: 'jsonp'
+        }
+        console.log("Inventariado: "+$scope.inventariado.value);
+        console.log("estadop: "+$scope.estadop.value);
+        // $http(request)
+        //   .then(function success(response) {}, function error(response) {
+        //     console.log("Error:" + response.status);
+        //     alert("No se conecto");
+        //   });
       } else {
         alert("No enviar");
       }
