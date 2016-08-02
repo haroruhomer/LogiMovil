@@ -251,7 +251,7 @@ angular.module('logimovil.controllers', [])
             estadop: $scope.estadop.value,
             novedadp: $scope.novedadp.value,
             estador: $scope.estador.value,
-            novedad: $scope.novedadr.value,
+            novedadr: $scope.novedadr.value,
             latitud: $scope.latitud,
             longitud: $scope.longitud
 
