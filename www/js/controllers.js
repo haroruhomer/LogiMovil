@@ -327,7 +327,7 @@ angular.module('logimovil.controllers', [])
           var name = timeNow + "_" + $scope.pedido.pedido + "_" + 1;
           var requestfoto = {
             method: 'POST',
-            url: "http://movilweb.net/logistica/Movil/entrarfoto.php",
+            url: "http://movilweb.net/logistica/Movil/entrar_foto.php",
             headers: {
               "Content-Type": undefined
             },
@@ -341,6 +341,7 @@ angular.module('logimovil.controllers', [])
           $http(requestfoto).then(function success(response) {
 
           }, function error(response) {
+            alert(response.status);
             var fotos = JSON.parse(localStorage.getItem('fotos'));
             if (fotos != null) {
               fotos[fotos.length] = requestfoto.data;
@@ -357,7 +358,7 @@ angular.module('logimovil.controllers', [])
           var name = timeNow + "_" + $scope.pedido.pedido + "_" + 2;
           var requestfoto1 = {
             method: 'POST',
-            url: "http://movilweb.net/logistica/Movil/entrarfoto.php",
+            url: "http://movilweb.net/logistica/Movil/entrar_foto.php",
             headers: {
               "Content-Type": undefined
             },
@@ -388,7 +389,7 @@ angular.module('logimovil.controllers', [])
           var name = timeNow + "_" + $scope.pedido.pedido + "_" + 3;
           var requestfoto2 = {
             method: 'POST',
-            url: "http://movilweb.net/logistica/Movil/entrarfoto.php",
+            url: "http://movilweb.net/logistica/Movil/entrar_foto.php",
             headers: {
               "Content-Type": undefined
             },
@@ -455,7 +456,7 @@ angular.module('logimovil.controllers', [])
       navigator.camera.getPicture(function(imageData) {
 
           $scope.imagen1 = imageData;
-          
+
         },
         function() {
           alert("error");
