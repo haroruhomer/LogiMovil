@@ -62,6 +62,9 @@ angular.module('logimovil.controllers', [])
       localStorage.removeItem('placa');
       $window.location = "#/home";
     };
+    $scope.sincronizar = function(){
+      var pendiente = angular.isDefined(localStorage.getItem('pendientes'));
+    };
   })
   .controller('pedidoCtrl', function($scope, $http, $window, $stateParams, $filter) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
@@ -130,14 +133,14 @@ angular.module('logimovil.controllers', [])
       //     console.log("Error:" + response.status);
       //     alert("No se conecto");
       //   });
-      $scope.estadop = {}; //Estado pedido
-      $scope.novedadp = {}; //Novedad pedido
+      $scope.estadop = {value:""}; //Estado pedido
+      $scope.novedadp = {value:""}; //Novedad pedido
 
 
-      $scope.estador = {}; //Estado Recojo
-      $scope.novedadr = {}; //Novedad Recojo
+      $scope.estador = {value:""}; //Estado Recojo
+      $scope.novedadr = {value:""}; //Novedad Recojo
 
-      $scope.inventariado={};
+      $scope.inventariado={value:""};
 
 
       $scope.pedidos = [];
@@ -230,6 +233,7 @@ angular.module('logimovil.controllers', [])
       }];
 
     })
+
     $scope.enviar = function() {
       var enviar = confirm("¿Enviar?");
       if (enviar == true) {
@@ -243,17 +247,41 @@ angular.module('logimovil.controllers', [])
           data: {
             consecutivo: $scope.id,
             placa : localStorage.getItem('placa'),
-            estadop: $scope.estadop
+            invetariado:$scope.inventariado.value,
+            estadop: $scope.estadop.value,
+            novedadp: $scope.novedadp.value,
+            estador: $scope.estador.value,
+            novedad: $scope.novedadr.value,
+            latitud: $scope.latitud,
+            longitud: $scope.longitud
+
           },
           dataType: 'jsonp'
         }
-        console.log("Inventariado: "+$scope.inventariado.value);
-        console.log("estadop: "+$scope.estadop.value);
-        // $http(request)
-        //   .then(function success(response) {}, function error(response) {
-        //     console.log("Error:" + response.status);
-        //     alert("No se conecto");
-        //   });
+        $http(request)
+          .then(function success(response) {
+            alert("Enviado");
+            $window.location = "#/lista";
+          }, function error(response) {
+
+            alert("No se conecto");
+            var pendiente = angular.isDefined(localStorage.getItem('pendientes'));
+            console.log(pendiente);
+            if (pendiente) {
+              var pendientes=JSON.parse(localStorage.getItem('pendientes'));
+              console.log(JSON.stringify(localStorage.getItem('pendientes')));
+              pendientes.concat(request.data);
+              var pedidos = JSON.parse(localStorage.getItem('pendientes'));
+              //console.log(JSON.parse(localStorage.getItem('pedidos')));
+              var mipedido = $filter('filter')(pedidos, function(d) {
+                return d.consecutivo === $scope.id;
+              })[0];
+              console.log(mipedido);
+            }else {
+              localStorage.setItem(JSON.stringify(request.data));
+            }
+            console.log("Error:" + response.status);
+          });
       } else {
         alert("No enviar");
       }
