@@ -83,7 +83,7 @@ angular.module('logimovil.controllers', [])
       for (var i = 0; i < fotos.length; i++) {
         var requestfotos = {
           method: 'POST',
-          url: "http://movilweb.net/logistica/Movil/enviar.php",
+          url: "http://movilweb.net/logistica/Movil/entrar_foto.php",
           headers: {
             "Content-Type": undefined
           },
