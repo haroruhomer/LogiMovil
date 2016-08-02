@@ -208,7 +208,7 @@ angular.module('logimovil.controllers', [])
         text: "En otro domicilio",
         value: 8
       }, {
-        text: "Novedad en dirección",
+        text: "Novedad en direccion",
         value: 9
       }];
       //Novedades recojo no recibido
