@@ -76,14 +76,27 @@ angular.module('logimovil.controllers', [])
           dataType: 'jsonp'
         }
         $http(request)
-          .then(function success(response) {
-          }, function error(response) {
-          });
+          .then(function success(response) {}, function error(response) {});
       }
       localStorage.removeItem('pendientes');
+      var fotos = JSON.parse(localStorage.getItem('pendientes'));
+      for (var i = 0; i < fotos.length; i++) {
+        var requestfotos = {
+          method: 'POST',
+          url: "http://movilweb.net/logistica/Movil/enviar.php",
+          headers: {
+            "Content-Type": undefined
+          },
+          data: fotos[i],
+          dataType: 'jsonp'
+        }
+        $http(request)
+          .then(function success(response) {}, function error(response) {});
+      }
+      localStorage.removeItem('fotos');
     };
   })
-  .controller('pedidoCtrl', function($scope, $http, $window, $stateParams, $filter,$ionicScrollDelegate) {
+  .controller('pedidoCtrl', function($scope, $http, $window, $stateParams, $filter, $ionicScrollDelegate) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.latitud = 0;
       $scope.longitud = 0;
@@ -119,6 +132,11 @@ angular.module('logimovil.controllers', [])
       if (mipedido.tipodoc == "R") {
         $scope.color = "#FFFF55";
       }
+
+      $scope.imagen = "";
+      $scope.imagen1 = "";
+      $scope.imagen2 = "";
+
       $scope.estadop = {
         value: ""
       }; //Estado pedido
@@ -239,6 +257,23 @@ angular.module('logimovil.controllers', [])
     };
     $scope.enviar = function() {
       var enviar = confirm("¿Envia?");
+
+      if ($scope.pedido.invent == 's' && $scope.inventariado.value == "") {
+        alert("Este pedido debe ir inventariado");
+        return;
+      }
+      if (($scope.pedido.tipodoc == "P" || $scope.pedido.tipodoc == "A") && ($scope.estadop.value == "" || $scope.novedadp.value == "")) {
+        alert("Seleccione novedad o estado");
+        return
+      }
+      if (($scope.pedido.tipodoc == "R" || $scope.pedido.tipodoc == "A") && ($scope.estador.value == "" || $scope.novedadr.value == "")) {
+        alert("Seleccione novedad o estado");
+        return
+      }
+      if (($scope.pedido.tipodoc == "P" || $scope.pedido.tipodoc == "A") && ($scope.imagen == "" && $scope.imagen1 == "" && $scope.imagen2 == "")) {
+        alert("Debe enviar mínimo una foto");
+        return;
+      }
       if (enviar == true) {
         $scope.placa = localStorage.getItem('placa');
         var request = {
@@ -261,34 +296,125 @@ angular.module('logimovil.controllers', [])
           },
           dataType: 'jsonp'
         }
-        $http(request)
-          .then(function success(response) {
-            alert("Enviado");
-            $window.location = "#/lista";
+        $http(request).then(function success(response) {
+
+        }, function error(response) {
+          var pendientes = JSON.parse(localStorage.getItem('pendientes'));
+          if (pendientes != null) {
+            pendientes[pendientes.length] = request.data;
+            localStorage.setItem('pendientes', JSON.stringify(pendientes));
+            console.log(JSON.parse(localStorage.getItem('pedidos')));
+            var pedidos = JSON.parse(localStorage.getItem('pedidos'));
+            var mipedido = pedidos.filter(function(i) {
+              return i.consecutivo != $scope.id;
+            });
+            console.log(mipedido);
+          } else {
+            var guardar = [];
+            guardar[0] = request.data;
+            localStorage.setItem('pendientes', JSON.stringify(guardar));
+            console.log(JSON.parse(localStorage.getItem('pedidos')));
+            var pedidos = JSON.parse(localStorage.getItem('pedidos'));
+            var mipedido = pedidos.filter(function(i) {
+              return i.consecutivo != $scope.id;
+            });
+            console.log(mipedido);
+          }
+          alert("No se conecto");
+        });
+        if ($scope.imagen != "") {
+          var timeNow = $filter('date')(new Date(), 'yyyyMMddHHmmss');
+          var name = timeNow + "_" + $scope.pedido.pedido + "_" + 1;
+          var requestfoto = {
+            method: 'POST',
+            url: "http://movilweb.net/logistica/Movil/entrarfoto.php",
+            headers: {
+              "Content-Type": undefined
+            },
+            data: {
+              pedido: $scope.pedido.pedido,
+              name: name,
+              imagen: $scope.imagen
+            },
+            dataType: 'jsonp'
+          }
+          $http(requestfoto).then(function success(response) {
+
           }, function error(response) {
-            var pendientes = JSON.parse(localStorage.getItem('pendientes'));
-            if (pendientes != null) {
-              pendientes[pendientes.length] = request.data;
-              localStorage.setItem('pendientes', JSON.stringify(pendientes));
-              console.log(JSON.parse(localStorage.getItem('pedidos')));
-              var pedidos = JSON.parse(localStorage.getItem('pedidos'));
-              var mipedido = pedidos.filter(function(i) {
-                return i.consecutivo != $scope.id;
-              });
-              console.log(mipedido);
+            var fotos = JSON.parse(localStorage.getItem('fotos'));
+            if (fotos != null) {
+              fotos[fotos.length] = requestfoto.data;
+              localStorage.setItem('fotos', JSON.stringify(fotos));
             } else {
               var guardar = [];
-              guardar[0] = request.data;
-              localStorage.setItem('pendientes', JSON.stringify(guardar));
-              console.log(JSON.parse(localStorage.getItem('pedidos')));
-              var pedidos = JSON.parse(localStorage.getItem('pedidos'));
-              var mipedido = pedidos.filter(function(i) {
-                return i.consecutivo != $scope.id;
-              });
-              console.log(mipedido);
+              guardar[0] = requestfoto.data;
+              localStorage.setItem('fotos', JSON.stringify(guardar));
+            }
+          });
+        }
+        if ($scope.imagen1 != "") {
+          var timeNow = $filter('date')(new Date(), 'yyyyMMddHHmmss');
+          var name = timeNow + "_" + $scope.pedido.pedido + "_" + 2;
+          var requestfoto1 = {
+            method: 'POST',
+            url: "http://movilweb.net/logistica/Movil/entrarfoto.php",
+            headers: {
+              "Content-Type": undefined
+            },
+            data: {
+              pedido: $scope.pedido.pedido,
+              name: name,
+              imagen: $scope.imagen1
+            },
+            dataType: 'jsonp'
+          }
+          $http(requestfoto1).then(function success(response) {
+
+          }, function error(response) {
+            var fotos = JSON.parse(localStorage.getItem('fotos'));
+            if (fotos != null) {
+              fotos[fotos.length] = requestfoto1.data;
+              localStorage.setItem('fotos', JSON.stringify(fotos));
+            } else {
+              var guardar = [];
+              guardar[0] = requestfoto1.data;
+              localStorage.setItem('fotos', JSON.stringify(guardar));
             }
             alert("No se conecto");
           });
+        }
+        if ($scope.imagen2 != "") {
+          var timeNow = $filter('date')(new Date(), 'yyyyMMddHHmmss');
+          var name = timeNow + "_" + $scope.pedido.pedido + "_" + 3;
+          var requestfoto2 = {
+            method: 'POST',
+            url: "http://movilweb.net/logistica/Movil/entrarfoto.php",
+            headers: {
+              "Content-Type": undefined
+            },
+            data: {
+              pedido: $scope.pedido.pedido,
+              name: name,
+              imagen: $scope.imagen2
+            },
+            dataType: 'jsonp'
+          }
+          $http(requestfoto2).then(function success(response) {
+
+          }, function error(response) {
+            var fotos = JSON.parse(localStorage.getItem('fotos'));
+            if (fotos != null) {
+              fotos[fotos.length] = requestfoto2.data;
+              localStorage.setItem('fotos', JSON.stringify(fotos));
+            } else {
+              var guardar = [];
+              guardar[0] = requestfoto2.data;
+              localStorage.setItem('fotos', JSON.stringify(guardar));
+            }
+            alert("No se conecto");
+          });
+        }
+
       } else {
         alert("No enviar");
       }
@@ -296,19 +422,18 @@ angular.module('logimovil.controllers', [])
     $scope.tomarFoto = function() {
       var options = {
         // Some common settings are 20, 50, and 100
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URI,
+        quality: 20,
+        destinationType: Camera.DestinationType.DATA_URL,
         // In this app, dynamically set the picture source, Camera or photo gallery
         sourceType: Camera.PictureSourceType.CAMERA,
         encodingType: Camera.EncodingType.JPEG,
         mediaType: Camera.MediaType.PICTURE,
         allowEdit: false,
-        saveToPhotoAlbum: true,
         correctOrientation: true //Corrects Android orientation quirks
       };
       navigator.camera.getPicture(function(imageData) {
-          alert(imagedata);
-          $scope.imagen1 = imageData;
+
+          $scope.imagen = imageData;
         },
         function() {
           alert("error");
@@ -318,19 +443,19 @@ angular.module('logimovil.controllers', [])
     $scope.tomarFoto2 = function() {
       var options = {
         // Some common settings are 20, 50, and 100
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URI,
+        quality: 20,
+        destinationType: Camera.DestinationType.DATA_URL,
         // In this app, dynamically set the picture source, Camera or photo gallery
         sourceType: Camera.PictureSourceType.CAMERA,
         encodingType: Camera.EncodingType.JPEG,
         mediaType: Camera.MediaType.PICTURE,
         allowEdit: false,
-        saveToPhotoAlbum: true,
         correctOrientation: true //Corrects Android orientation quirks
       };
       navigator.camera.getPicture(function(imageData) {
-          alert(imagedata);
+
           $scope.imagen1 = imageData;
+          
         },
         function() {
           alert("error");
@@ -340,19 +465,18 @@ angular.module('logimovil.controllers', [])
     $scope.tomarFoto3 = function() {
       var options = {
         // Some common settings are 20, 50, and 100
-        quality: 50,
-        destinationType: Camera.DestinationType.FILE_URI,
-        // In this app, dynamically set the picture source, Camera or photo gallery
+        quality: 20,
+        destinationType: Camera.DestinationType.DATA_URL,
         sourceType: Camera.PictureSourceType.CAMERA,
         encodingType: Camera.EncodingType.JPEG,
         mediaType: Camera.MediaType.PICTURE,
         allowEdit: false,
-        saveToPhotoAlbum: true,
         correctOrientation: true //Corrects Android orientation quirks
       };
       navigator.camera.getPicture(function(imageData) {
-          alert(imagedata);
+
           $scope.imagen2 = imageData;
+
         },
         function() {
           alert("error");
