@@ -1,5 +1,5 @@
 <ion-view view-title="Pedido" class="has-header">
-	<ion-content>
+	<ion-content overflow-scroll="true">
 		<div style="font-size:100%; background:{{color}}; ">
 			<div class="row">
 				<div class="col tableindex tablecontent">Consecutivo:</div>
@@ -47,7 +47,7 @@
 			</div>
 		</div>
 		<!-- Inicio selects de pedidos -->
-		<div ng-if="tipo=='P'|| tipo=='A'">
+		<div ng-show="tipo=='P'|| tipo=='A'">
 			<div class="list ">
 				<label class="item item-input item-select">
 					<div class="input-label">
@@ -59,7 +59,7 @@
 				</label>
 			</div>
 			<!-- Select si entregado-->
-			<div class="list" ng-if="estadop.value=='Entregado'">
+			<div class="list" ng-show="estadop.value=='Entregado'">
 				<label class="item item-input item-select">
 					<div class="input-label">
 						Recibe Pedido:
@@ -70,7 +70,7 @@
 				</label>
 			</div>
 			<!-- Select si no entregado-->
-			<div class="list" ng-if="estadop.value=='No entregado'">
+			<div class="list" ng-show="estadop.value=='No entregado'">
 				<label class="item item-input item-select">
 					<div class="input-label">
 						Recibe Pedido:
@@ -84,19 +84,19 @@
 		<!-- Fin selects de pedidos -->
 
 		<!-- Inicio selects de recojos -->
-		<div ng-if="tipo=='R'|| tipo=='A'">
+		<div ng-show="tipo=='R'|| tipo=='A'">
 			<div class="list">
 				<label class="item item-input item-select">
 					<div class="input-label">
 						Estado Recojo:
 					</div>
 					<select ng-model="$parent.estador.value">
-						<option ng-repeat="estado in estadorecojo" ng-value="estado.text" >{{estado.text}}</option>
+						<option ng-repeat="estado in estadorecojo" ng-value="estado.text">{{estado.text}}</option>
 					</select>
 				</label>
 			</div>
 			<!-- Select si recibido-->
-			<div class="list" ng-if="estador.value=='Recibido'">
+			<div class="list" ng-show="estador.value=='Recibido'">
 				<label class="item item-input item-select">
 					<div class="input-label">
 						Recibe Recojo:
@@ -107,7 +107,7 @@
 				</label>
 			</div>
 			<!-- Select si no recibido-->
-			<div class="list" ng-if="estador.value=='No recibido'">
+			<div class="list" ng-show="estador.value=='No recibido'">
 				<label class="item item-input item-select">
 					<div class="input-label">
 						Recibe Recojo:
@@ -119,9 +119,10 @@
 			</div>
 		</div>
 		<!-- Fin selects de recojos -->
-		<div class="col center" ng-if="tipo=='P' || tipo=='A'">
+		<div class="col center" ng-show="tipo=='P' || tipo=='A'">
 			<ion-list>
-				<ion-list-header><h4><b>Inventario</b></h4></ion-list-header>
+				<ion-list-header>
+					<h4><b>Inventario</b></h4></ion-list-header>
 				<ion-radio ng-model="$parent.inventariado.value" ng-value="'s'">inventariado</ion-radio>
 				<ion-radio ng-model="$parent.inventariado.value" ng-value="'n'">No Inventariado</ion-radio>
 				<ion-radio ng-model="$parent.inventariado.value" ng-value="'i'">Inventariado Incompleto</ion-radio>
@@ -130,13 +131,13 @@
 		</div>
 
 		<div class="row">
-			<div class="col center" ng-if="tipo=='P' || tipo=='A'">
+			<div class="col center" ng-show="tipo=='P' || tipo=='A'">
 				<button class="button tablecontent" ng-click="tomarFoto()">Foto 1</button>
 			</div>
-			<div class="col center" ng-if="tipo=='P' || tipo=='A'">
+			<div class="col center" ng-show="tipo=='P' || tipo=='A'">
 				<button class="button tablecontent" ng-click="tomarFoto2()">Foto 2</button>
 			</div>
-			<div class="col center" ng-if="tipo=='P' || tipo=='A'">
+			<div class="col center" ng-show="tipo=='P' || tipo=='A'">
 				<button class="button tablecontent" ng-click="tomarFoto3()">Foto 3</button>
 			</div>
 		</div>
@@ -150,5 +151,7 @@
 				</a>
 			</div>
 		</div>
+		<ion-infinite-scroll on-infinite="resize()" distance="50%">
+		</ion-infinite-scroll>
 	</ion-content>
 </ion-view>

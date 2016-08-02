@@ -49,7 +49,6 @@ angular.module('logimovil.controllers', [])
           if (response.data != "null") {
             $scope.pedidos = response.data;
             localStorage.setItem('pedidos', JSON.stringify(response.data));
-            console.log(JSON.stringify(localStorage.getItem('pedidos')));
           }
         }, function error(response) {
           console.log("Error:" + response.status);
@@ -62,11 +61,29 @@ angular.module('logimovil.controllers', [])
       localStorage.removeItem('placa');
       $window.location = "#/home";
     };
-    $scope.sincronizar = function(){
-      var pendiente = angular.isDefined(localStorage.getItem('pendientes'));
+    $scope.sincronizar = function() {
+
+      $scope.placa = localStorage.getItem('placa');
+      var pendientes = JSON.parse(localStorage.getItem('pendientes'));
+      for (var i = 0; i < pendientes.length; i++) {
+        var request = {
+          method: 'POST',
+          url: "http://movilweb.net/logistica/Movil/enviar.php",
+          headers: {
+            "Content-Type": undefined
+          },
+          data: pendientes[i],
+          dataType: 'jsonp'
+        }
+        $http(request)
+          .then(function success(response) {
+          }, function error(response) {
+          });
+      }
+      localStorage.removeItem('pendientes');
     };
   })
-  .controller('pedidoCtrl', function($scope, $http, $window, $stateParams, $filter) {
+  .controller('pedidoCtrl', function($scope, $http, $window, $stateParams, $filter,$ionicScrollDelegate) {
     $scope.$on("$ionicView.beforeEnter", function(event, data) {
       $scope.latitud = 0;
       $scope.longitud = 0;
@@ -90,11 +107,9 @@ angular.module('logimovil.controllers', [])
     $scope.$on('$ionicView.enter', function(event, data) {
       $scope.id = $stateParams.consecutivo;
       var pedidos = JSON.parse(localStorage.getItem('pedidos'));
-      //console.log(JSON.parse(localStorage.getItem('pedidos')));
       var mipedido = $filter('filter')(pedidos, function(d) {
         return d.consecutivo === $scope.id;
       })[0];
-      //console.log("pedido " + mipedido.tipodoc);
       $scope.pedido = mipedido;
       $scope.tipo = mipedido.tipodoc;
       $scope.color = "#FFFFFF";
@@ -104,43 +119,24 @@ angular.module('logimovil.controllers', [])
       if (mipedido.tipodoc == "R") {
         $scope.color = "#FFFF55";
       }
-      // var request = {
-      //   method: 'POST',
-      //   url: "http://movilweb.net/logistica/Movil/trae_pedido.php",
-      //   headers: {
-      //     "Content-Type": undefined
-      //   },
-      //   data: {
-      //     consecutivo: $scope.id
-      //   },
-      //   dataType: 'jsonp'
-      // }
-      // $http(request)
-      //   .then(function success(response) {
-      //     if (response.data != "null") {
-      //       //console.log(response.data[0].id);
-      //       $scope.pedido = response.data[0];
-      //       $scope.tipo = response.data[0].tipodoc;
-      //       $scope.color = "#000000";
-      //       if (response.data[0].tipodoc == "P") {
-      //         $scope.color = "#55ff55";
-      //       }
-      //       if (response.data[0].tipodoc == "R") {
-      //         $scope.color = "#FFFF55";
-      //       }
-      //     }
-      //   }, function error(response) {
-      //     console.log("Error:" + response.status);
-      //     alert("No se conecto");
-      //   });
-      $scope.estadop = {value:""}; //Estado pedido
-      $scope.novedadp = {value:""}; //Novedad pedido
+      $scope.estadop = {
+        value: ""
+      }; //Estado pedido
+      $scope.novedadp = {
+        value: ""
+      }; //Novedad pedido
 
 
-      $scope.estador = {value:""}; //Estado Recojo
-      $scope.novedadr = {value:""}; //Novedad Recojo
+      $scope.estador = {
+        value: ""
+      }; //Estado Recojo
+      $scope.novedadr = {
+        value: ""
+      }; //Novedad Recojo
 
-      $scope.inventariado={value:""};
+      $scope.inventariado = {
+        value: ""
+      };
 
 
       $scope.pedidos = [];
@@ -208,7 +204,7 @@ angular.module('logimovil.controllers', [])
         text: "En otro domicilio",
         value: 8
       }, {
-        text: "Novedad en direccion",
+        text: "Novedad en dirección",
         value: 9
       }];
       //Novedades recojo no recibido
@@ -233,9 +229,16 @@ angular.module('logimovil.controllers', [])
       }];
 
     })
-
+    $scope.borrar = function() {
+      localStorage.removeItem('pendientes');
+      console.log("BORRADO");
+    };
+    $scope.resize = function() {
+      $ionicScrollDelegate.resize();
+      $scope.$broadcast('scroll.infiniteScrollComplete');
+    };
     $scope.enviar = function() {
-      var enviar = confirm("¿Enviar?");
+      var enviar = confirm("¿Envia?");
       if (enviar == true) {
         $scope.placa = localStorage.getItem('placa');
         var request = {
@@ -246,8 +249,8 @@ angular.module('logimovil.controllers', [])
           },
           data: {
             consecutivo: $scope.id,
-            placa : localStorage.getItem('placa'),
-            inventariado:$scope.inventariado.value,
+            placa: localStorage.getItem('placa'),
+            inventariado: $scope.inventariado.value,
             estadop: $scope.estadop.value,
             novedadp: $scope.novedadp.value,
             estador: $scope.estador.value,
@@ -263,24 +266,28 @@ angular.module('logimovil.controllers', [])
             alert("Enviado");
             $window.location = "#/lista";
           }, function error(response) {
-
-            alert("No se conecto");
-            var pendiente = angular.isDefined(localStorage.getItem('pendientes'));
-            console.log(pendiente);
-            if (pendiente) {
-              var pendientes=JSON.parse(localStorage.getItem('pendientes'));
-              console.log(JSON.stringify(localStorage.getItem('pendientes')));
-              pendientes.concat(request.data);
-              var pedidos = JSON.parse(localStorage.getItem('pendientes'));
-              //console.log(JSON.parse(localStorage.getItem('pedidos')));
-              var mipedido = $filter('filter')(pedidos, function(d) {
-                return d.consecutivo === $scope.id;
-              })[0];
+            var pendientes = JSON.parse(localStorage.getItem('pendientes'));
+            if (pendientes != null) {
+              pendientes[pendientes.length] = request.data;
+              localStorage.setItem('pendientes', JSON.stringify(pendientes));
+              console.log(JSON.parse(localStorage.getItem('pedidos')));
+              var pedidos = JSON.parse(localStorage.getItem('pedidos'));
+              var mipedido = pedidos.filter(function(i) {
+                return i.consecutivo != $scope.id;
+              });
               console.log(mipedido);
-            }else {
-              localStorage.setItem(JSON.stringify(request.data));
+            } else {
+              var guardar = [];
+              guardar[0] = request.data;
+              localStorage.setItem('pendientes', JSON.stringify(guardar));
+              console.log(JSON.parse(localStorage.getItem('pedidos')));
+              var pedidos = JSON.parse(localStorage.getItem('pedidos'));
+              var mipedido = pedidos.filter(function(i) {
+                return i.consecutivo != $scope.id;
+              });
+              console.log(mipedido);
             }
-            console.log("Error:" + response.status);
+            alert("No se conecto");
           });
       } else {
         alert("No enviar");
