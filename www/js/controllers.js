@@ -247,7 +247,7 @@ angular.module('logimovil.controllers', [])
           data: {
             consecutivo: $scope.id,
             placa : localStorage.getItem('placa'),
-            invetariado:$scope.inventariado.value,
+            inventariado:$scope.inventariado.value,
             estadop: $scope.estadop.value,
             novedadp: $scope.novedadp.value,
             estador: $scope.estador.value,
