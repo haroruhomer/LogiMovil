@@ -415,7 +415,7 @@ angular.module('logimovil.controllers', [])
             alert("No se conecto");
           });
         }
-
+        $window.location = "#/lista";
       } else {
         alert("No enviar");
       }
